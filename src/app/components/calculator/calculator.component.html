@@ -1,0 +1,29 @@
+<div class="calculator">
+  <form [formGroup]="form">
+    <div class="calculator-header">
+      <div class="calculator-field calculator-header-expression">{{ expression }}</div>
+      <input hidden formControlName="expressionField" class="calculator-header" [(ngModel)]="expression" />
+      <div class="calculator-field">{{ result$ | async }}</div>
+      <div class="error">
+        <div *ngIf="isInvalidExpression$ | async">invalid expression</div>
+        <div *ngIf="isTwoOrMoreOperatorsInRowError">two or more operations in a row</div>
+        <div *ngIf="isUnpairedNumberBracketsError">unpaired number of brackets</div>
+        <div *ngIf="isRightBracketBeforeLeftError">the right bracket must come after the left one</div>
+        <div *ngIf="isOperatorWithoutOperandError">operator without right operand</div>
+        <div *ngIf="isDoubleDotError">the number already has a delimiter</div>
+      </div>
+    </div>
+  </form>
+  <div class="calculator-buttons-container">
+    <button
+      *ngFor="let btn of buttonsData"
+      [title]="btn.description"
+      [ngClass]="btn.className ? btn.className : ''"
+      class="calculator-buttons-container-btn"
+      (click)="addValue(btn.value)"
+      [disabled]="btn.disabled"
+    >
+      {{ btn.text || btn.value }}
+    </button>
+  </div>
+</div>
